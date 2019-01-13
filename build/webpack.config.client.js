@@ -60,7 +60,7 @@ if (isDev) {
 } else {
   config = merge(baseConfig, {
     entry: {   // 将所用到的类库单独打包
-      app: path.join(__dirname, '../src/index.js'),
+      app: path.join(__dirname, '../client/index.js'),
       vendor: ['vue']
     },
     output: {

@@ -5,16 +5,14 @@
 </template>
 
 
-
-
 <style lang="stylus" scoped>
     .main-header {
         text-align: center;
 
         h1 {
-            font-size 100px;
-            color rgba(225, 47, 47, 0.6);
-            margin 20px
+            font-size: 100px;
+            color: rgba(225, 147, 47, 0.6);
+            margin: 20px;
         }
 
     }

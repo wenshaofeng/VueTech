@@ -1,9 +1,10 @@
 const path = require('path');
+const vueLoaderOptions = require('./vue-loader.config')
 
 const isDev = process.env.NODE_ENV === 'development';
 const config = {
     target: 'web',
-    entry: path.join(__dirname, '../src/index.js'),   // 输入：项目主文件（入口文件）
+    entry: path.join(__dirname, '../client/index.js'),   // 输入：项目主文件（入口文件）
     output: {       // 输出
         filename: 'build.[hash:8].js',  // 输出的文件名
         path: path.join(__dirname, '../dist')  // 输出路径
@@ -12,7 +13,8 @@ const config = {
         rules: [    // 规则
             {
                 test: /\.vue$/,
-                loader: 'vue-loader'
+                loader: 'vue-loader',
+                options: vueLoaderOptions(isDev)
             },
             {
                 test: /\.jsx$/,

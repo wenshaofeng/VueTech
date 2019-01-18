@@ -172,3 +172,278 @@ watch: {
 [官方文档具体解释](https://cn.vuejs.org/v2/style-guide/#%E9%81%BF%E5%85%8D-v-if-%E5%92%8C-v-for-%E7%94%A8%E5%9C%A8%E4%B8%80%E8%B5%B7-%E5%BF%85%E8%A6%81)
 
 ## Vue组件
+
+### 组件继承
+
+组件继承`extends`的使用场景：
+对于一个含有多个配置项的公用组件( 功能比较泛的组件 )，那么在调用的时候可以先通过`extends`的方式继承公用组件，然后覆盖它的配置项，再进行调用
+
+#### - `extend` 合并
+
+```javascript
+
+const component = {
+  props: {
+    active: Boolean,
+    propOne: {
+      required : true
+    }
+  },
+  template: `
+    <div>
+      <input type="text" v-model="text"/>
+      <span @click="handleChange">{{propOne}}</span>
+      <span v-show="active">see me if active</span>
+    </div>
+  `,
+  data () {
+    return {
+      text: 0
+    }
+  },
+  mounted () {
+    console.log('comp mounted')
+  },
+  methods: {
+    handleChange () {
+      this.$emit('change')
+    }
+  }
+}
+
+...
+
+// extend 方法需要使用 propsData 传入
+const CompVue = Vue.extend(component)
+
+new CompVue({
+  el: '#root',
+  propsData: {
+    propOne: 'xxx科比'
+  },
+  data: {
+    text: '123'   
+  },
+  mounted () {
+    console.log('instance mounted kebi')
+  }
+})
+
+```
+new 一个新的实例 CompVue 的 data会覆盖 配置里的 data ，而生命周期函数则两个都会执行
+![](https://upload-images.jianshu.io/upload_images/9249356-bbc81e646d1d4a53.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) 
+
+![](https://upload-images.jianshu.io/upload_images/9249356-e12926b95512fa2d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+#### 继承方式 2 
+
+```javascript
+const component2 = {
+  extends: component,
+  data () {
+    return {
+      text: 1
+    }
+  },
+  mounted () {
+    console.log('comp2 mounted')
+  }
+}
+...
+
+new Vue({
+  el: '#root',
+  components: {
+    Comp: component2
+  },
+  template:`
+  <comp></comp>
+  `
+})
+```
+
+![](https://upload-images.jianshu.io/upload_images/9249356-702e89d25e8b3578.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+#### $parent 
+
+```javascript
+const component2 = {
+  // parent: parent,
+  extends: component,
+  data () {
+    return {
+      text: 1
+    }
+  },
+  mounted () {
+    console.log('comp2 mounted')
+    console.log(this.$parent.$options.name)
+    this.$parent.text = '12345'
+  }
+}
+
+...
+
+new Vue({
+  name: 'Root',
+  el: '#root',
+  mounted () {
+    
+  },
+  components: {
+    Comp: component2
+  },
+  data: {
+    text: 2333
+  },
+  template: `
+    <div>
+      <span>{{text}}</span>
+      <comp></comp>
+    </div>
+  `
+})
+
+```
+
+![](https://upload-images.jianshu.io/upload_images/9249356-3bb058f717513232.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+可以看到，子组件可以通过 `this.$parent`方法去改变父组件的属性(**但是不推荐！**)
+
+##### 指定 parent
+
+```javascript
+const component2 = {
+  parent: parent,
+  extends: component,
+  data () {
+    return {
+      text: 1
+    }
+  },
+  mounted () {
+    console.log('comp2 mounted')
+    console.log(this.$parent.$options.name)  
+    this.$parent.text = '12345'
+  }
+}
+
+...
+const parent = new Vue({
+  name: 'parent'
+})
+
+...
+new Vue({
+  name: 'Root',
+  el: '#root',
+  components: {
+    Comp: component2
+  },
+  data: {
+    text: 2333
+  },
+  template: `
+    <div>
+      <span>{{text}}</span>
+      <comp></comp>
+    </div>
+  `
+})
+```
+
+
+```javascript
+const component2 = {
+  extends: component,
+  data () {
+    return {
+      text: 1
+    }
+  },
+  mounted () {
+    console.log('comp2 mounted')
+    console.log(this.$parent.$options.name)  
+    this.$parent.text = '12345'
+  }
+}
+...
+const parent = new Vue({
+  name: 'parent'
+})
+
+...
+new Vue({
+  name: 'Root',
+  el: '#root',
+  mounted () {
+    console.log(this.$parent.$options.name)  
+  }
+  components: {
+    Comp: component2
+  },
+  data: {
+    text: 2333
+  },
+  template: `
+    <div>
+      <span>{{text}}</span>
+      <comp></comp>
+    </div>
+  `
+})
+
+```
+![](https://upload-images.jianshu.io/upload_images/9249356-087578143a5e422a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+- 可以看出我们在通过 new 一个 Vue 实例的时候，才可以去指定 `parent` 是什么
+- 而如果是通过声明一个组件 ，因为组件是通过模板去编译的，它的`parent`是在Vue在渲染的过程中指定的，我们无法去修改它的`parent`
+
+
+
+
+### 组件的自定义双向绑定
+
+
+### 组件的高级属性
+
+### 组件的 render function
+
+>template 转换成 render function 
+
+```javascript
+//template
+template: `
+    <comp-one ref="comp">
+      <span ref="span">{{value}}</span>
+    </comp-one>
+`,
+
+// template 会被编译为一个 render 函数
+render (createElement) {
+    // return this.$createElement()
+    return createElement(
+      'comp-one',  
+      {
+        ref: 'comp',
+      },
+      [
+        createElement('span', {
+          ref: 'span'
+        }, this.value)
+      ]
+    )
+  }
+})
+
+
+```
+
+>createElement(one,two,three) 函数 有三个参数， 
+
+- one: 是一个要创建的节点的名字(该节点可以是一个DOM 节点元素，也可以是一个组件)
+- two: 节点的一些属性( data )
+- three: 节点里的内容，可以是一个子节点(数组)，也可以是字符串
+
+createElement会创建一个Vnode 类，也就是Vue的虚拟DOM，会存在内存中，跟真实的DOM进行对比

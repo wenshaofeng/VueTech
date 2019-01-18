@@ -32,7 +32,6 @@ const parent = new Vue({
 })
 
 const component2 = {
-  parent: parent,
   extends: component,
   data () {
     return {
@@ -41,7 +40,7 @@ const component2 = {
   },
   mounted () {
     console.log('comp2 mounted')
-    console.log(this.$parent.$options.name)
+    console.log(this.$parent.$options.name)  
     this.$parent.text = '12345'
   }
 }
@@ -51,13 +50,13 @@ const component2 = {
 // new CompVue({
 //   el: '#root',
 //   propsData: {
-//     propOne: 'xxx'
+//     propOne: 'xxx科比'
 //   },
 //   data: {
-//     text: '123'
+//     text: 'nice'
 //   },
 //   mounted () {
-//     console.log('instance mounted')
+//     console.log('instance mounted kobe')
 //   }
 // })
 
@@ -66,7 +65,7 @@ new Vue({
   name: 'Root',
   el: '#root',
   mounted () {
-    console.log(this.$parent.$options.name)
+    console.log(this.$parent.$options.name) 
   },
   components: {
     Comp: component2

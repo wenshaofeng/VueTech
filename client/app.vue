@@ -3,7 +3,12 @@
     <div id="app">
         <div id="cover"></div>
         <APP_Header></APP_Header>
-        <APP_Todo></APP_Todo>
+        <router-link to='/app/123'>app123</router-link>
+        <router-link to='/app/456'>app456</router-link>
+        <router-link to='/app/789'>app789</router-link>
+        <router-link to='/login'>login</router-link>
+        <router-view />
+        <!-- <APP_Todo></APP_Todo> -->
         <APP_Footer></APP_Footer>
     </div>
 </template>

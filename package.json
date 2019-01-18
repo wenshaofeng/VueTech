@@ -7,14 +7,15 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.config.client.js",
     "build": "npm run clean && npm run build:client",
-    "practice":"cross-env NODE_ENV=development webpack-dev-server --mode development --config build/webpack.config.practice.js",
+    "practice": "cross-env NODE_ENV=development webpack-dev-server --mode development --config build/webpack.config.practice.js",
     "clean": "rimraf dist",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --config build/webpack.config.client.js"
   },
   "author": "Li",
   "license": "ISC",
   "dependencies": {
-    "vue": "^2.5.13"
+    "vue": "^2.5.13",
+    "vue-router": "^3.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^8.1.0",

@@ -14,7 +14,9 @@ const defaultPlugins = [
       NODE_ENV: isDev ? '"development"' : '"production"'
     }
   }),
-  new HTMLPlugin()
+  new HTMLPlugin({
+    template: path.join(__dirname, 'template.html')
+  })
 ]
 
 let config
@@ -25,7 +27,8 @@ const devServer = {
   overlay: {  // webpack编译出现错误，则显示到网页上
     errors: true,
   },
-  // open: true,
+  historyApiFallback: true,
+  open: true,
   // 不刷新热加载数据
   hot: true
 }

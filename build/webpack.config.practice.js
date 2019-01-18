@@ -21,7 +21,7 @@ const defaultPlugins = [
 let config
 
 const devServer = {
-  port: '8090',
+  port: 8090,
   host: '0.0.0.0',
   overlay: {  // webpack编译出现错误，则显示到网页上
     errors: true,

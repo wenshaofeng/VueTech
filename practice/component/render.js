@@ -26,6 +26,7 @@ const component = {
       style: {
         width: '200px',
         height: '200px',
+        background:"skyblue",
         border: '1px solid #aaa'
       },
       value: 'component value'
@@ -62,9 +63,9 @@ new Vue({
       'comp-one',
       {
         ref: 'comp',
-        props: {
-          props1: this.value
-        },
+        // props: {
+        //   props1: this.value
+        // },
         // on: {
         //   click: this.handleClick
         // }

@@ -90,8 +90,17 @@ setInterval(() => {
 
 ![](https://upload-images.jianshu.io/upload_images/9249356-99402fbfcd2a01cb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 - 从上图中可以看出，在`created`生命周期时，是无法进行DOM的操作的，因为页面 DOM节点 还未挂载,但是此时可以修改数据
+
+- 在 `beforeCreate` 钩子函数调用的时候，是获取不到 `props` 或者 `data` 中的数据的，因为这些数据的初始化都在 `initState` 中。
+
 - created 和 mounted 这两个生命周期在组件渲染时只会被调用一次，且在使用服务端渲染(SSR) 的时候，`mounted`&&`beforeMount` 是不会被调用的
+**注意** mounted 不会承诺所有的子组件也都一起被挂载。如果你希望等到整个视图都渲染完毕，可以用 vm.$nextTick 替换掉 mounted：
+
 - .vue 文件开发时，是没有`template`的，`vue-loader`帮助了我们把`template`处理成了`render function` , 因为解析`template`为一个 `render function` 是一个比较耗时的过程，所以`vue-loader`帮助我们处理了这一过程，使得页面渲染的效率变得更高
+
+- 另外还有 keep-alive 独有的生命周期，分别为 `activated`和 `deactivated` 。用 keep-alive 包裹的组件在切换时不会进行销毁，而是缓存到内存中并执行 `deactivated` 钩子函数，命中缓存渲染后会执行 `actived` 钩子函数。
+
+- 最后就是销毁组件的钩子函数 `beforeDestroy` 和 `destroyed`。前者适合移除事件、定时器等等，否则可能会引起内存泄露的问题。然后进行一系列的销毁操作，如果有子组件的话，也会递归销毁子组件，所有子组件都销毁完毕后才会执行根组件的 `destroyed` 钩子函数。
 
 ## 数据绑定
 

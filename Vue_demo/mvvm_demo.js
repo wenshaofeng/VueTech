@@ -9,7 +9,7 @@ function Nice(options = {}) {
         Object.defineProperty(this,key,{
             enumerable:true, //可枚举
             get(){
-                return this._data[key] //this.a = 
+                return this._data[key] //this.a 
             },
             set(newVal){
                 this._data[key] = newVal
@@ -23,7 +23,7 @@ function Observe(data) { //这里写主要逻辑
         //把 data 属性通过object.defineProperty 的方式 定义属性
       
        let val = data[key]
-    //    observe(val)
+       observe(val)
        //定义属性
         Object.defineProperty(data, key, {
             enumerable: true,

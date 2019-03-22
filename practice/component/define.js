@@ -31,7 +31,7 @@ const component = {
   }
 }
 
-// Vue.component('CompOne', component)
+Vue.component('CompOne', component)
 
 new Vue({
   el: '#root',
@@ -55,7 +55,7 @@ new Vue({
       <comp-one :active="false" propOne="text2"></comp-one>
     </div>
   `,
-  components: {
-    CompOne: component
-  }
+  // components: {
+  //   CompOne: component
+  // }
 })

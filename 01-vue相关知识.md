@@ -71,6 +71,21 @@ setInterval(() => {
 
 ## Vue的生命周期
 
+
+>Vue 实例的生命周期函数（官方11个）：
+beforeCreate：在实例部分（事件/生命周期）初始化完成之后调用。
+created：在完成外部的注入/双向的绑定等的初始化之后调用。
+beforeMount：在页面渲染之前执行。
+mounted：dom 元素在挂载到页面之后执行。
+
+>首次加载页面时，不会走这两个钩子，只有当数据发生改变时才会执行：
+beforeUpdate：数据改变，还没重新渲染之前执行。
+updated：渲染数据完成之后执行。
+
+>执行销毁需要调用：vm.$destroy()
+beforeDestroy：实例销毁之前执行。
+destroyed：实例销毁之后执行。
+
 组件销毁时，会解除所有的事件监听以及 `watch`
 
 ```javascript
@@ -101,6 +116,26 @@ setInterval(() => {
 - 另外还有 keep-alive 独有的生命周期，分别为 `activated`和 `deactivated` 。用 keep-alive 包裹的组件在切换时不会进行销毁，而是缓存到内存中并执行 `deactivated` 钩子函数，命中缓存渲染后会执行 `actived` 钩子函数。
 
 - 最后就是销毁组件的钩子函数 `beforeDestroy` 和 `destroyed`。前者适合移除事件、定时器等等，否则可能会引起内存泄露的问题。然后进行一系列的销毁操作，如果有子组件的话，也会递归销毁子组件，所有子组件都销毁完毕后才会执行根组件的 `destroyed` 钩子函数。
+
+### Vue父子组件的渲染顺序
+![](https://upload-images.jianshu.io/upload_images/9249356-469e5bd1002a6614.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+- 加载渲染过程
+
+父beforeCreate->父created->父beforeMount->子beforeCreate->子created->子beforeMount->子mounted->父mounted
+
+- 子组件更新过程
+
+父beforeUpdate->子beforeUpdate->子updated->父updated
+
+- 父组件更新
+
+父beforeUpdate->父updated
+
+- 销毁过程
+
+父beforeDestroy->子beforeDestroy->子destroyed->父destroyed
+
 
 ## 数据绑定
 
@@ -181,6 +216,43 @@ watch: {
 [官方文档具体解释](https://cn.vuejs.org/v2/style-guide/#%E9%81%BF%E5%85%8D-v-if-%E5%92%8C-v-for-%E7%94%A8%E5%9C%A8%E4%B8%80%E8%B5%B7-%E5%BF%85%E8%A6%81)
 
 ## Vue组件
+
+### 组件注册
+
+```javascript
+import Vue from 'vue'
+//全局注册
+Vue.component('my-component', {
+    template: '<div>我是全局注册的组件内容</div>'
+})
+
+const Part_Register = {
+    template: `
+    <div>
+     我是局部注册的组件
+    </div>
+  `
+}
+
+new Vue({
+    el: '#root',
+    components: {
+        Nice: Part_Register
+    },
+    template: `
+    <div>
+      <nice />
+      <my-component />
+      <nice />
+
+    </div>
+  `,
+})
+```
+
+![](https://upload-images.jianshu.io/upload_images/9249356-965c907d7e670cf6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+**全局注册的行为必须在根 Vue 实例 (通过 new Vue) 创建之前发生。**
 
 ### 组件继承
 
@@ -414,6 +486,7 @@ new Vue({
 
 ### 组件的自定义双向绑定
 
+### BUS通信
 
 ### 组件的高级属性
 

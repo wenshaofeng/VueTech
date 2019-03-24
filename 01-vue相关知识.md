@@ -488,6 +488,17 @@ new Vue({
 
 ### BUS通信
 
+### 动态组件、异步组件
+
+### 组件之间的循环引用
+
+- 递归组件(循环引用自身)
+
+- 组件之间的循环引用
+
+
+### 手动挂载 (比如 message 弹窗组件)
+
 ### 组件的高级属性
 
 ### 组件的 render function
@@ -529,3 +540,7 @@ render (createElement) {
 - three: 节点里的内容，可以是一个子节点(数组)，也可以是字符串
 
 createElement会创建一个Vnode 类，也就是Vue的虚拟DOM，会存在内存中，跟真实的DOM进行对比
+
+
+### 函数化组件( funtional )
+Vue.js 提供了一个 functional 的布尔值选项，设置为true 可以使组件无状态和无实例，也就是没有data 和 this上下文，这样用 render 函数返回虚拟节点可以更容易渲染，因为函数化组件只是一个函数，渲染开销要小很多
